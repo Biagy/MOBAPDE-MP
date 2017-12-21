@@ -10,12 +10,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TextView;
+
+import static edu.dlsu.mobidev.gem.GamePanel.difficulty;
 
 public class matchResultsMulti extends AppCompatActivity {
 
-    Button home;
-    TextView tvTitle, tvHP, tvSSF, tvHitRate, tvRed, tvBlue, tvTime, tvWin;
-    EditText etHPR, etHPB, etSSFR, etSSFB, etRateR, etRateB, etTime, etWin;
+    Button home, playAgain;
+    TextView etHPR, etHPB, etSSFR, etSSFB, etRateR, etRateB, etDiff, etTime, etWin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,26 +29,18 @@ public class matchResultsMulti extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         setContentView(R.layout.activity_match_results_multi);
 
-        home = (Button) findViewById(R.id.buttonHomeMulti);
+        home = (Button) findViewById(R.id.buttonHomeSingle);
+        playAgain = (Button) findViewById(R.id.buttonAgain);
 
-        tvTitle = (TextView) findViewById(R.id.tvTitleMulti);
-        tvHP = (TextView) findViewById(R.id.tvHPMulti);
-        tvSSF = (TextView) findViewById(R.id.tvSSFMulti);
-        tvHitRate = (TextView) findViewById(R.id.tvHitRateMulti);
-        tvRed = (TextView) findViewById(R.id.tvRedMulti);
-        tvBlue = (TextView) findViewById(R.id.tvBlueMulti);
-        tvTime = (TextView) findViewById(R.id.tvTimeMulti);
-        tvWin = (TextView) findViewById(R.id.tvWinMulti);
-
-
-        etHPR = (EditText) findViewById(R.id.etHPRMulti);
-        etHPB = (EditText) findViewById(R.id.etHPBMulti);
-        etSSFR = (EditText) findViewById(R.id.etSSFRMulti);
-        etSSFB = (EditText) findViewById(R.id.etSSFBMulti);
-        etRateR = (EditText) findViewById(R.id.etRateRMulti);
-        etRateB = (EditText) findViewById(R.id.etRateBMulti);
-        etTime = (EditText) findViewById(R.id.etTimeMulti);
-        etWin = (EditText) findViewById(R.id.etWinMulti);
+        etHPR = (TextView) findViewById(R.id.etHPRSingle);
+        etHPB = (TextView) findViewById(R.id.etHPBSingle);
+        etSSFR = (TextView) findViewById(R.id.etSSFRSingle);
+        etSSFB = (TextView) findViewById(R.id.etSSFBSingle);
+        etRateR = (TextView) findViewById(R.id.etRateRSingle);
+        etRateB = (TextView) findViewById(R.id.etRateBSingle);
+        etDiff = (TextView) findViewById(R.id.etDiffSingle);
+        etTime = (TextView) findViewById(R.id.etTimeSingle);
+        etWin = (TextView) findViewById(R.id.etWinSingle);
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +50,60 @@ public class matchResultsMulti extends AppCompatActivity {
                 finish();
             }
         });
+
+        playAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(),ActivityCustomizeBlue.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        Intent intent = getIntent();
+
+        String win = intent.getExtras().getString("winner");
+        int time = intent.getExtras().getInt("timeLeft");
+        int hp = intent.getExtras().getInt("health");
+        int specials = intent.getExtras().getInt("specialFired");
+        int accuracy = (int) intent.getExtras().getFloat("accuracy");
+
+        int player2Hp = intent.getExtras().getInt("player2health");
+        int player2Specials = intent.getExtras().getInt("player2specialFired");
+        int player2Accuracy = (int) intent.getExtras().getFloat("player2accuracy");
+
+        int finalScoreA = 0;
+
+        if ((hp - 2*specials) < 1)
+            finalScoreA = 1;
+        else {
+            finalScoreA = hp - 2 * specials;
+        }
+
+        int finalScoreB = accuracy + time;
+        int finalScoreC = (difficulty) * 15;
+
+        int finalScore = finalScoreA * finalScoreB + finalScoreC;
+
+        etWin.setText(win);
+
+        etTime.setText(time+"");
+
+        etHPB.setText(hp+"");
+        etRateB.setText(accuracy+"%");
+        etSSFB.setText(specials+"");
+
+        etRateR.setText(player2Accuracy+""+"%");
+        etHPR.setText(player2Hp+"");
+        etSSFR.setText(player2Specials+"");
+
+
+        if(difficulty == 0)
+            etDiff.setText("Easy");
+        else if(difficulty == 1)
+            etDiff.setText("Medium");
+        else
+            etDiff.setText("Hard");
 
 
     }

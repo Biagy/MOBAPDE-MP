@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     TextView title;
-    Button single,multi,setting,highScore;
+    Button single,multi,credits;
+    ImageButton highScore, setting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +26,14 @@ public class MainMenuActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         setContentView(R.layout.activity_main_menu);
 
-        title = (TextView) findViewById(R.id.textView);
+        Constants.CURRENT_CONTEXT = getBaseContext();
+
+//        title = (TextView) findViewById(R.id.textView);
         single = (Button) findViewById(R.id.singlePlayer);
         multi = (Button) findViewById(R.id.multiplayer);
-        setting = (Button) findViewById(R.id.customize);
-        highScore = (Button) findViewById(R.id.highScore);
+        credits = (Button) findViewById(R.id.credits);
+        setting = (ImageButton) findViewById(R.id.settings);
+        highScore = (ImageButton) findViewById(R.id.highScore);
 
         single.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +48,15 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),ActivityCustomizeBlue.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        credits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(),credits.class);
                 startActivity(i);
                 finish();
             }

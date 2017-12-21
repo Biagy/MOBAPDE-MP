@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.*;
 
 /**
  * Created by asus on 11/7/2017.
@@ -15,12 +15,21 @@ import android.graphics.drawable.Drawable;
 public class Ball implements GameObject {
 
 
-    private Bitmap ballSprite;
-    private Rect rectangle;
+    protected Bitmap ballSprite;
+    protected Rect rectangle;
+    protected BitmapFactory bf;
 
 
     public int getPosY() {
         return rectangle.top;
+    }
+
+    public Rect getRect(){
+        return rectangle;
+    }
+
+    public void setRect(Rect rect){
+        rectangle = rect;
     }
 
 
@@ -36,18 +45,25 @@ public class Ball implements GameObject {
 
     public Ball(int x, int y,boolean isPlayer){
 
-        BitmapFactory bf = new BitmapFactory();
+        bf = new BitmapFactory();
         if(isPlayer) {
             ballSprite = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.blueball);
-            rectangle = new Rect(x - 35, y - 105, x + 35, y - 35);
+            rectangle = new Rect(x - 15, y - 85, x + 35, y - 35);
         }
         else {
             ballSprite = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.redball);
-            rectangle = new Rect(x - 35, y, x + 35, y + 70);
+            rectangle = new Rect(x - 15, y, x + 35, y + 50);
+
         }
 
-
     }
+
+    public void setSpriteSize(int x, int y){
+//        ballSprite;
+        ballSprite.setWidth(x);
+    }
+
+
     public boolean playercollide(RectPlayer player) {
         return Rect.intersects(rectangle,player.getRectangle());
     }

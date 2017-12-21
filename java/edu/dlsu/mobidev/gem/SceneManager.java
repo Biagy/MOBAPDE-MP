@@ -15,9 +15,12 @@ public class SceneManager {
     private ArrayList<Scene> scenes = new ArrayList<Scene>();
     public static int ACTIVE_SCENE;
 
-    public SceneManager(){
+    public SceneManager(int scene){
         ACTIVE_SCENE = 0;
-        scenes.add(new GameplayScene());
+        if(scene == 0)
+            scenes.add(new GameplaySceneSingle());
+        else
+            scenes.add(new GameplaySceneMulti());
     }
 
     public void receiveTouch(MotionEvent event) {

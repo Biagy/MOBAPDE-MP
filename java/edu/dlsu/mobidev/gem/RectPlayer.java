@@ -19,6 +19,25 @@ public class RectPlayer implements GameObject {
 
 
     private int health;
+    private int totalHealth;
+    private int special;
+
+    public int getSpecial() {
+        return special;
+    }
+
+    public int getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public int getAmmo() {
+        return ammo;
+    }
+
+    private int moveSpeed;
+    private int ammo;
+
+    int botSprite;
 
     private Bitmap idleImg;
 
@@ -26,19 +45,31 @@ public class RectPlayer implements GameObject {
         return rectangle;
     }
 
-    public RectPlayer(boolean isPlayer) {
+    public int getBotSprite(){
+        return botSprite;
+    }
+
+    public RectPlayer(boolean isPlayer,int health, int special, int moveSpeed,int ammo,int img) {
 
 
+        botSprite = img;
         BitmapFactory bf = new BitmapFactory();
         if(isPlayer)
-            idleImg = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pb);
+            idleImg = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(),img);
         else
             idleImg = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pr);
 
         rectangle = new Rect(0,0,idleImg.getWidth(),idleImg.getHeight());
 
-        health = 5;
+        this.health = this.totalHealth = health;
+        this.ammo = ammo;
+        this.special = special;
+        this.moveSpeed = moveSpeed;
 
+    }
+
+    public int getTotalHealth(){
+        return  totalHealth;
     }
 
     public int getHealth(){
@@ -55,14 +86,17 @@ public class RectPlayer implements GameObject {
 
 
 
+    public String toString(int i){
+        return i + "";
+    }
 
     @Override
     public void draw(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
+//        Paint paint = new Paint();
+//        paint.setColor(Color.RED);
         //canvas.drawRect(rectangle, paint);
         //animManager.draw(canvas, rectangle);
-        canvas.drawRect(rectangle,paint);
+//        canvas.drawRect(rectangle,paint);
         canvas.drawBitmap(idleImg,null,rectangle,new Paint());
 
 

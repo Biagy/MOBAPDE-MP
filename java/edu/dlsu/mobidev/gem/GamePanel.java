@@ -17,17 +17,19 @@ import android.view.SurfaceView;
  */
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+    protected static int difficulty;
+    protected static boolean movement;
     private MainThread thread;
     private SceneManager manager;
 
 
-    public GamePanel(Context context){
+    public GamePanel(Context context, int scene){
         super(context);
+        Constants.CURRENT_CONTEXT = context;
 
         getHolder().addCallback(this);
-        Constants.CURRENT_CONTEXT = context;
         thread = new MainThread(getHolder(),this);
-        manager = new SceneManager();
+        manager = new SceneManager(scene);
 
 
         setFocusable(true);
